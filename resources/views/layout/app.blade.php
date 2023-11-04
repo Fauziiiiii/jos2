@@ -355,7 +355,7 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="/">
+            <a class="nav-link" href="/dashboard">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -369,7 +369,7 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="/user">Data Pengguna</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user">Data User</a></li>
                 <li class="nav-item"><a class="nav-link" href="/paket">Data Paket</a></li>
                 <li class="nav-item"><a class="nav-link" href="/outlet">Data Outlet</a></li>
               </ul>
@@ -384,10 +384,9 @@
             </a>
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a></li>
-                <li class="nav-item"><a class="nav-link" href="">Registrasi Pelanggan</a></li>
-                <li class="nav-item"><a class="nav-link" href="">Data Paket</a></li>
-                <li class="nav-item"><a class="nav-link" href="">Data Outlet</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('member')}}">Registrasi Member</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{route('transaksi')}}">Transaksi</a></li>
+                <li class="nav-item"><a class="nav-link" href="">Laporan</a></li>
               </ul>
             </div>
           </li>
@@ -417,13 +416,23 @@
   <!-- container-scroller -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   
+  
   <script>
       $(document).ready(function () {
-          // Mengatur tindakan saat tombol "Detail" ditekan
           $('a[data-toggle="modal"]').click(function () {
               var targetModal = $(this).attr('data-target'); // Mendapatkan target modal
               $(targetModal).modal('show'); // Menampilkan modal
           });
+      });
+  </script>
+  <script>
+      $(document).ready(function () {
+        $('#tutup').click(function () {
+          $('#tambahTransaksiModal').modal('hide');
+        });
+        $('#silang').click(function () {
+          $('#tambahTransaksiModal').modal('hide');
+        });
       });
   </script>
   
