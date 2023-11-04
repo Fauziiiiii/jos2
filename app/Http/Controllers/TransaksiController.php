@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Models\Member;
+use App\Models\Outlet;
 
 class TransaksiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $transaksi = Transaksi::all();
+        $outlet = Outlet::all();
+        $member = Member::all();
+        $status = ['baru', 'proses', 'selesai', 'diambil'];
+        $dibayar = ['dibayar', 'belum_dibayar'];
+        return view("transaksi.index", compact('outlet','member','transaksi', 'status', 'dibayar'));
     }
 
     /**
@@ -23,7 +27,10 @@ class TransaksiController extends Controller
      */
     public function create()
     {
-        //
+        $transaksi = Transaksi::all(); 
+        $outlet = Outlet::all();
+        $member = Member::all();
+        return view("transaksi.create", compact('outlet','member','transaksi'));
     }
 
     /**
@@ -34,7 +41,37 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'id_outlet'=> 'required',
+            'id_member'=> 'required',
+            'batas_waktu'=> 'required',
+            'biaya_tambahan'=> 'required',
+            'diskon'=> 'required',
+            'pajak' => 'required',
+            'status'=> 'required',
+            'dibayar'=> 'required',
+        ]);
+
+        $timestamp = time(); // Mendapatkan waktu saat ini dalam detik
+        $kode_invoice = 'INV' . $timestamp . mt_rand(1000, 9999);
+
+        $dataTransaksi = [
+            'id_outlet'=> $request->input('id_outlet'),
+            'kode_invoice' => $kode_invoice,
+            'id_member'=> $request->input('id_member'),
+            'tgl'=> now(),
+            'batas_waktu'=> $request->input('batas_waktu'),
+            'biaya_tambahan'=> $request->input('biaya_tambahan'),
+            'diskon'=> $request->input('diskon'),
+            'pajak'=> $request->input('pajak'),
+            'status'=> $request->input('status'),
+            'dibayar'=> $request->input('dibayar'),
+            'id_user'=> auth()->user()->id,
+        ];
+        
+        // dd($dataTransaksi);
+        Transaksi::create($dataTransaksi);
+        return redirect()->route('transaksi')->with('success','Berhasil menambahkan transaksi baru');
     }
 
     /**
